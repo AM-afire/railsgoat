@@ -30,6 +30,9 @@ class SessionsController < ApplicationController
     end
   end
 
+  name = params[:name]
+  @projects = Project.where("name like '" + name + "'");
+
   def destroy
     cookies.delete(:auth_token)
     reset_session
