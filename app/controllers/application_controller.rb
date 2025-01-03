@@ -15,6 +15,17 @@ class ApplicationController < ActionController::Base
     ActionMailer::Base.default_url_options[:host]     = request.host_with_port
   end
 
+  # introduce high severity vulnerability CWE-23 Path Traversal
+  def download
+    begin
+      path = params[:name]
+      file = params[:type].constantize.new(path)
+      send_file file, disposition: "attachment"
+    rescue
+      redirect_to user_benefit_forms_path(user_id: current_user.id)
+    end
+   end
+
   def current_user
     @current_user ||= (
       User.find_by(auth_token: cookies[:auth_token].to_s) ||
