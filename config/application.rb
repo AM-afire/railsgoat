@@ -58,4 +58,18 @@ module Railsgoat
 
     config.action_dispatch.return_only_media_type_on_content_type = false
   end
+  #add high severity vulnerability Cross Origin Resource Sharing
+  module Sample
+    class Application < Rails::Application
+      config.middleware.use Rack::Cors do
+        allow do
+          origins 'someserver.example.com'
+          resource %r{/users/\d+.json},
+          :headers => ['Origin', 'Accept', 'Content-Type'],
+          :methods => [:post, :get]
+        end
+      end
+    end
+  end
+
 end

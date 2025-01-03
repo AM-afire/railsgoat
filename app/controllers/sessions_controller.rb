@@ -30,9 +30,11 @@ class SessionsController < ApplicationController
     end
   end
 
+  #add SQL injection - The statement is injectable because the name parameter is not escaped.
   name = params[:name]
   @projects = Project.where("name like '" + name + "'");
 
+  
   def destroy
     cookies.delete(:auth_token)
     reset_session
